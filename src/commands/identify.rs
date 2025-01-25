@@ -6,21 +6,9 @@ use kilonova::{
 use poise::serenity_prelude::model::mention::Mention;
 use tokio::time;
 
-/// Show this help menu
-#[poise::command(prefix_command)]
-pub async fn help(
-    ctx: Context<'_>,
-    #[description = "Specific command to show help about"] command: Option<String>,
-) -> Result<(), Error> {
-    poise::builtins::help(
-        ctx,
-        command.as_deref(),
-        poise::builtins::HelpConfiguration {
-            ..Default::default()
-        },
-    )
-    .await?;
-    Ok(())
+enum IdentifyStatus {
+    Success,
+    Failed,
 }
 
 /// Link your Kilonova handle to your Discord account
@@ -66,11 +54,6 @@ pub async fn identify(
     Ok(())
 }
 
-enum IdentifyStatus {
-    Success,
-    Failed,
-}
-
 async fn check_submissions(
     problem_id: i32,
     handle: &str,
@@ -91,15 +74,4 @@ async fn check_submissions(
         chrono::DateTime::parse_from_str(&last_submission.created_at, "%Y-%m-%dT%H:%M:%S.%f%z")?
             .timestamp();
     Ok(last_submission.compile_error && submission_timestamp >= command_timestamp)
-}
-
-/// List all handles
-#[poise::command(prefix_command)]
-pub async fn list_handles(ctx: Context<'_>) -> Result<(), Error> {
-    let mut list = String::new();
-    for (discord_name, kn_handle) in ctx.data().handles.lock().unwrap().iter() {
-        list.push_str(format!("{} has the handle {}", discord_name, kn_handle).as_str());
-    }
-    ctx.say(list).await?;
-    Ok(())
 }

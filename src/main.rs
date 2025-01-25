@@ -45,9 +45,9 @@ async fn main() {
     // Every option can be omitted to use its default value
     let options = poise::FrameworkOptions {
         commands: vec![
-            commands::help(),
-            commands::identify(),
-            commands::list_handles(),
+            commands::help::help(),
+            commands::identify::identify(),
+            commands::list_handles::list_handles(),
         ],
         prefix_options: poise::PrefixFrameworkOptions {
             prefix: Some("~".into()),
