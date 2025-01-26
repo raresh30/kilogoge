@@ -47,8 +47,20 @@ pub async fn identify(
         }
     }
     match status {
-        IdentifyStatus::Success => ctx.say("Successfully linked Kilonova account.").await?,
-        IdentifyStatus::Failed => ctx.say("Couldn't link Kilonova account.").await?,
+        IdentifyStatus::Success => {
+            ctx.say(format!(
+                "{}, your Kilonova account was successfully linked.",
+                Mention::from(ctx.author().id),
+            ))
+            .await?
+        }
+        IdentifyStatus::Failed => {
+            ctx.say(format!(
+                "{}, your Kilonova account couldn't be linked.",
+                Mention::from(ctx.author().id),
+            ))
+            .await?
+        }
     };
 
     Ok(())

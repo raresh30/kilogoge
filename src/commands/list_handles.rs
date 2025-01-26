@@ -5,7 +5,7 @@ use crate::{Context, Error};
 pub async fn list_handles(ctx: Context<'_>) -> Result<(), Error> {
     let mut list = String::new();
     for (discord_name, kn_handle) in ctx.data().handles.lock().unwrap().iter() {
-        list.push_str(format!("{} has the handle {}", discord_name, kn_handle).as_str());
+        list.push_str(format!("{} has the handle {}\n", discord_name, kn_handle).as_str());
     }
     ctx.say(list).await?;
     Ok(())
