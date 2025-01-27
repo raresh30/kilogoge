@@ -1,8 +1,5 @@
 use crate::{Context, Error};
-use kilonova::{
-    submissions::{Submissions, SubmissionsQuery},
-    user::User,
-};
+use kilonova::{submissions, user::User};
 use poise::serenity_prelude::model::mention::Mention;
 use tokio::time;
 
@@ -71,8 +68,8 @@ async fn check_submissions(
     handle: &str,
     command_timestamp: i64,
 ) -> Result<bool, Error> {
-    let user_id = User::by_name(handle).await?.id;
-    let submissions = Submissions::get(SubmissionsQuery {
+    let user_id = User::from_name(handle).await?.id;
+    let submissions = submissions::fetch(submissions::SubmissionFilter {
         problem_id: Some(problem_id),
         user_id: Some(user_id),
         ..Default::default()
